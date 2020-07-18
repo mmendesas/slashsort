@@ -1,0 +1,12 @@
+.bar-graph {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.bar-item {
+  margin: 1px;
+  background-color: turquoise;
+  width: 8px;
+}
