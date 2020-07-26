@@ -7,20 +7,31 @@ import './styles.css'
 
 function SortingViewer() {
   const [list, setList] = useState([]);
+  const [elapsed, setElapsed] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [sorted, setSorted] = useState(false);
 
   useEffect(() => {
-    resetArray();
+    resetList();
     return () => {
       setList([])
     }
   }, [])
 
-  function resetArray() {
+  function resetList() {
     const array = [];
-    for (let i = 0; i < 60; i++) {
-      array.push(randomInt(50, 450));
+    let num = 0;
+    for (let i = 0; i < 40; i++) {
+      num = randomInt(100, 350);
+      while (array.includes(num)) {
+        num = randomInt(100, 350);
+      }
+      array.push(num);
     }
+    console.log('GROOOSA', array);
     setList(array);
+    setElapsed(0);
+    setSorted(false);
   }
 
   function swap(arr, index1, index2) {
@@ -59,34 +70,49 @@ function SortingViewer() {
   }
 
   function bubble() {
+    console.log("bubble inicio")
+    setRunning(true);
     const [_, interactions] = bubbleSort(list);
-    const arr = list.slice();
+
+    console.log('Inicio')
+    const start = new Date();
 
     interactions.forEach(delayLoop(item => {
       const [index1, index2] = item;
-      swap(arr, index1, index2);
       swapColor(index1, index2);
       swapElements(index1, index2);
     }, 100))
+
+    setTimeout(() => {
+      const end = new Date();
+      var timeDiff = end - start;
+      timeDiff /= 1000;
+      console.log("Acabou", timeDiff);
+      setElapsed(timeDiff.toFixed(2));
+      setRunning(false);
+      setSorted(true);
+    }, interactions.length * 100);
   }
 
   return (
-    <div>
-      <ul className="bar-graph">
-        {
-          list.map((item, index) =>
-            <li
-              key={`bar-${index}`}
-              className="bar-item"
-              style={{ height: `${item}px` }}>
-              {" "}
-            </li>
-          )
-        }
-      </ul>
+    <div className="container">
+      <section className="graph">
+        <ul className="bar-graph">
+          {
+            list.map((item, index) =>
+              <li
+                key={`bar-${index}`}
+                className="bar-item"
+                style={{ height: `${item}px` }}>
+              </li>
+            )
+          }
+        </ul>
+        <span>Elapsed Time: {elapsed}s</span>
+      </section>
       <section className="controls">
-        <button onClick={() => resetArray()}>Randomize array</button>
-        <button onClick={() => bubble()}>Bubble Sort</button>
+        <button className="btn" onClick={() => resetList()}>Randomize array</button>
+        <button className="btn" onClick={() => !running && bubble()} disabled={sorted || running}>Bubble Sort</button>
       </section>
     </div>
   );
@@ -95,7 +121,6 @@ function SortingViewer() {
 function randomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
