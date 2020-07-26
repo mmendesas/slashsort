@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { bubbleSort } from '../../algo'
+import { bubbleSort, selectionSort } from '../../algo'
 
 import './styles.css'
+
+const LIST_SIZE = 40;
 
 function SortingViewer() {
   const [list, setList] = useState([]);
@@ -21,7 +23,7 @@ function SortingViewer() {
   function resetList() {
     const array = [];
     let num = 0;
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < LIST_SIZE; i++) {
       num = randomInt(100, 350);
       while (array.includes(num)) {
         num = randomInt(100, 350);
@@ -69,29 +71,33 @@ function SortingViewer() {
     el02.height = temp;
   }
 
-  function bubble() {
-    console.log("bubble inicio")
+  function runAnimation(list) {
     setRunning(true);
-    const [_, interactions] = bubbleSort(list);
-
-    console.log('Inicio')
     const start = new Date();
 
-    interactions.forEach(delayLoop(item => {
+    list.forEach(delayLoop(item => {
       const [index1, index2] = item;
       swapColor(index1, index2);
       swapElements(index1, index2);
     }, 100))
 
     setTimeout(() => {
-      const end = new Date();
-      var timeDiff = end - start;
+      let timeDiff = new Date() - start;
       timeDiff /= 1000;
-      console.log("Acabou", timeDiff);
       setElapsed(timeDiff.toFixed(2));
       setRunning(false);
       setSorted(true);
-    }, interactions.length * 100);
+    }, list.length * 100);
+  }
+
+  function bubble() {
+    const [_, interactions] = bubbleSort(list);
+    runAnimation(interactions);
+  }
+
+  function selection() {
+    const [_, interactions] = selectionSort(list);
+    runAnimation(interactions);
   }
 
   return (
@@ -113,6 +119,7 @@ function SortingViewer() {
       <section className="controls">
         <button className="btn" onClick={() => resetList()}>Randomize array</button>
         <button className="btn" onClick={() => !running && bubble()} disabled={sorted || running}>Bubble Sort</button>
+        <button className="btn" onClick={() => !running && selection()} disabled={sorted || running}>Selection Sort</button>
       </section>
     </div>
   );
@@ -123,6 +130,5 @@ function randomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 
 export default SortingViewer;
