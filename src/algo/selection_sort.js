@@ -2,8 +2,6 @@ export default function selectionSort(arr) {
   arr = arr.slice();
   const interactions = [];
 
-  console.log("BEFORE", arr);
-
   for (let i = 0; i < arr.length; i++) {
     let small = i;
     for (let j = i + 1; j < arr.length; j++) {
@@ -12,15 +10,13 @@ export default function selectionSort(arr) {
       }
     }
 
+    // console.log("ij", j, small, 'interactions', arr[i], arr[small]);
     interactions.push([i, small]);
 
     const temp = arr[i];
     arr[i] = arr[small];
     arr[small] = temp;
   }
-
-  console.log('after', arr);
-  console.log("interactions", interactions);
 
   return [arr, interactions];
 }
