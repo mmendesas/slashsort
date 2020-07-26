@@ -35,8 +35,13 @@
   background-color: rgb(5, 150, 5);
 }
 
-.btn:disabled{
+.btn:disabled {
   cursor: not-allowed;
   background-color: #ccc;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
