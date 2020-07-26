@@ -1,8 +1,13 @@
-# Sorting Viewer
+# slashsort
 
-Simple sorting algorithms viewer app. Just play around some algorithms. 
+Simple sorting algorithms viewer app. 
 
 Check it ---> https://mmendesas.github.io/slashsort/
+
+<div align="center" style="display: flex; flex-direction:column">
+  <div>Just play around with some algorithms</div>
+  <img alt="preview" src="src/assets/app-preview.png" width="60%" />
+</div>
 
 ## How to test this implementation
 
