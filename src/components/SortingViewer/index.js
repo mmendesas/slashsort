@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { bubbleSort, selectionSort } from '../../algo'
+import { bubbleSort, selectionSort, mergeSort } from '../../algo'
 
 import './styles.css'
 
@@ -30,8 +30,7 @@ function SortingViewer() {
       }
       array.push(num);
     }
-    console.log('GROOOSA', array);
-    setList(array);
+    setList([40, 10, 50, 70]);
     setElapsed(0);
     setSorted(false);
   }
@@ -100,6 +99,12 @@ function SortingViewer() {
     runAnimation(interactions);
   }
 
+  function merge(){
+    // let list2 = [4, 1, 5, 7, 2, 9];
+    const [_, interactions] = mergeSort(list);
+    runAnimation(interactions)
+  }
+
   return (
     <div className="container">
       <section className="graph">
@@ -120,6 +125,7 @@ function SortingViewer() {
         <button className="btn" onClick={() => resetList()}>Randomize array</button>
         <button className="btn" onClick={() => !running && bubble()} disabled={sorted || running}>Bubble Sort</button>
         <button className="btn" onClick={() => !running && selection()} disabled={sorted || running}>Selection Sort</button>
+        <button className="btn" onClick={() => !running && merge()} disabled={sorted || running}>Merge Sort</button>
       </section>
     </div>
   );
